@@ -1,0 +1,13 @@
+name: Mirror to GitLab
+on: [push, delete] # 可配置为 push 或定时任务
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 获取完整历史
+      - name: Mirror to GitLab
+        run: |
+          git remote add gitlab https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_TOKEN }}@gitlab.quectel.com:8108/lambert.jiao/blog.git
+          git push --mirror gitlab
